@@ -29,6 +29,11 @@ interface Product {
   location: string;
   phone: string;
   inStock: boolean;
+  bulkPrice?: number;
+  minBulkQty?: number;
+  isVerified: boolean;
+  freshness: string;
+  bestFor: string[];
 }
 
 const VendorDashboard = () => {
@@ -37,6 +42,7 @@ const VendorDashboard = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isProfileSet, setIsProfileSet] = useState(false);
   const [userPhone, setUserPhone] = useState("");
+  const [showBulkDeals, setShowBulkDeals] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -53,59 +59,111 @@ const VendorDashboard = () => {
     
     setUserPhone(phone || "");
     
-    // Mock products based on business type
-    const mockProducts: Product[] = [
+    // Street food specific products with real pain points addressed
+    const streetFoodProducts: Product[] = [
       {
         id: "1",
-        name: "Tomatoes",
-        hindiName: "टमाटर",
-        supplier: "Fresh Farm Supplies",
-        price: 25,
+        name: "Fresh Tomatoes",
+        hindiName: "ताज़े टमाटर",
+        supplier: "किसान डायरेक्ट फार्म",
+        price: 18,
         unit: "per kg",
-        rating: 4.5,
-        location: "2.5 km away",
+        rating: 4.8,
+        location: "1.2 km - आपके पास",
         phone: "9876543210",
-        inStock: true
+        inStock: true,
+        bulkPrice: 15,
+        minBulkQty: 10,
+        isVerified: true,
+        freshness: "आज सुबह की फसल",
+        bestFor: ["chaat", "sandwich", "dosa"]
       },
       {
         id: "2", 
-        name: "Onions",
-        hindiName: "प्याज",
-        supplier: "Vegetable Hub",
-        price: 30,
-        unit: "per kg", 
-        rating: 4.2,
-        location: "1.8 km away",
+        name: "Onions (Medium)",
+        hindiName: "प्याज (मध्यम)",
+        supplier: "वेजिटेबल मंडी डायरेक्ट",
+        price: 22,
+        unit: "per kg",
+        rating: 4.6,
+        location: "2.1 km - थोक मार्केट",
         phone: "9876543211",
-        inStock: true
+        inStock: true,
+        bulkPrice: 18,
+        minBulkQty: 5,
+        isVerified: true,
+        freshness: "कल की फसल",
+        bestFor: ["chaat", "parathas", "tea"]
       },
       {
         id: "3",
         name: "Green Chillies",
-        hindiName: "हरी मिर्च",
-        supplier: "Spice World",
-        price: 80,
+        hindiName: "हरी मिर्च (तेज़)",
+        supplier: "मसाला किंग",
+        price: 60,
         unit: "per kg",
-        rating: 4.7,
-        location: "3.2 km away", 
+        rating: 4.9,
+        location: "800m - स्पाइस मार्केट",
         phone: "9876543212",
-        inStock: true
+        inStock: true,
+        bulkPrice: 50,
+        minBulkQty: 2,
+        isVerified: true,
+        freshness: "बिल्कुल ताज़ी",
+        bestFor: ["chaat", "dosa", "parathas"]
       },
       {
         id: "4",
-        name: "Cooking Oil",
-        hindiName: "खाना पकाने का तेल",
-        supplier: "Oil Express",
-        price: 120,
+        name: "Pure Mustard Oil",
+        hindiName: "शुद्ध सरसों का तेल",
+        supplier: "तेल वाला भाई",
+        price: 140,
         unit: "per liter",
-        rating: 4.3,
-        location: "4.1 km away",
+        rating: 4.7,
+        location: "1.5 km - ऑयल शॉप",
         phone: "9876543213", 
-        inStock: true
+        inStock: true,
+        bulkPrice: 130,
+        minBulkQty: 5,
+        isVerified: true,
+        freshness: "ताज़ा निकाला गया",
+        bestFor: ["parathas", "chaat", "frying"]
+      },
+      {
+        id: "5",
+        name: "Refined Flour (Maida)",
+        hindiName: "मैदा (बारीक)",
+        supplier: "आटा चक्की वाले",
+        price: 35,
+        unit: "per kg",
+        rating: 4.4,
+        location: "3.2 km - मिल एरिया",
+        phone: "9876543214",
+        inStock: true,
+        bulkPrice: 28,
+        minBulkQty: 10,
+        isVerified: true,
+        freshness: "आज पिसा गया",
+        bestFor: ["dosa", "parathas", "batter"]
+      },
+      {
+        id: "6",
+        name: "Fresh Coriander",
+        hindiName: "हरा धनिया",
+        supplier: "हरी सब्जी वाला",
+        price: 25,
+        unit: "per bundle",
+        rating: 4.5,
+        location: "900m - सब्जी मंडी",
+        phone: "9876543215",
+        inStock: true,
+        isVerified: true,
+        freshness: "सुबह 6 बजे की कटी",
+        bestFor: ["chaat", "garnishing"]
       }
     ];
     
-    setProducts(mockProducts);
+    setProducts(streetFoodProducts);
   }, [navigate]);
 
   const handleSetupProfile = (e: React.FormEvent) => {
@@ -227,81 +285,125 @@ const VendorDashboard = () => {
       </div>
 
       <div className="max-w-6xl mx-auto p-4 space-y-6">
-        {/* Search Bar */}
-        <Card>
-          <CardContent className="pt-6">
-            <div className="relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-              <Input
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="उत्पाद खोजें / Search products..."
-                className="pl-10"
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Business Info */}
-        <Card className="bg-gradient-to-r from-green-500 to-blue-500 text-white">
+        {/* Street Food Problem Statement */}
+        <Card className="bg-gradient-to-r from-orange-500 to-red-500 text-white">
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
               <Package className="h-6 w-6" />
               <div>
-                <h3 className="font-semibold">आपका व्यवसाय / Your Business: {businessType}</h3>
-                <p className="text-green-100">नीचे सुझाए गए उत्पाद देखें / See recommended products below</p>
+                <h3 className="font-semibold">🎯 {businessType} के लिए विशेष / Special for {businessType}</h3>
+                <p className="text-orange-100">ताज़ा, सस्ता, और भरोसेमंद - सिर्फ आपके व्यवसाय के लिए / Fresh, cheap & trusted - just for your business</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
+        {/* Search & Filter */}
+        <div className="flex gap-4">
+          <Card className="flex-1">
+            <CardContent className="pt-6">
+              <div className="relative">
+                <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <Input
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="उत्पाद खोजें / Search products..."
+                  className="pl-10"
+                />
+              </div>
+            </CardContent>
+          </Card>
+          <Button
+            variant={showBulkDeals ? "default" : "outline"}
+            onClick={() => setShowBulkDeals(!showBulkDeals)}
+            className="px-6"
+          >
+            थोक डील / Bulk Deals
+          </Button>
+        </div>
+
         {/* Products Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProducts.map((product) => (
-            <Card key={product.id} className="hover:shadow-lg transition-shadow">
+            <Card key={product.id} className="hover:shadow-lg transition-shadow border-l-4 border-l-green-500">
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <div>
-                    <CardTitle className="text-lg">{product.name}</CardTitle>
+                    <div className="flex items-center gap-2">
+                      <CardTitle className="text-lg">{product.name}</CardTitle>
+                      {product.isVerified && (
+                        <Badge variant="default" className="bg-green-500 text-xs">
+                          ✓ सत्यापित
+                        </Badge>
+                      )}
+                    </div>
                     <CardDescription className="text-base text-gray-600">
                       {product.hindiName}
                     </CardDescription>
+                    <p className="text-xs text-green-600 font-medium mt-1">
+                      🌱 {product.freshness}
+                    </p>
                   </div>
                   <Badge variant={product.inStock ? "default" : "secondary"}>
-                    {product.inStock ? "उपलब्ध / Available" : "स्टॉक नहीं / Out of Stock"}
+                    {product.inStock ? "मिल रहा है" : "स्टॉक खत्म"}
                   </Badge>
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-2xl font-bold text-green-600">
-                    ₹{product.price}
-                  </span>
-                  <span className="text-gray-500">{product.unit}</span>
+                {/* Price Section */}
+                <div className="bg-gray-50 p-3 rounded-lg">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-2xl font-bold text-green-600">
+                      ₹{product.price}
+                    </span>
+                    <span className="text-gray-500">{product.unit}</span>
+                  </div>
+                  {product.bulkPrice && showBulkDeals && (
+                    <div className="text-sm">
+                      <span className="text-orange-600 font-semibold">
+                        थोक: ₹{product.bulkPrice}/{product.unit}
+                      </span>
+                      <span className="text-gray-500 ml-2">
+                        (न्यूनतम {product.minBulkQty} {product.unit})
+                      </span>
+                    </div>
+                  )}
                 </div>
                 
+                {/* Supplier Info */}
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <Store className="h-4 w-4 text-gray-400" />
-                    <span className="text-sm">{product.supplier}</span>
+                    <Store className="h-4 w-4 text-blue-500" />
+                    <span className="text-sm font-medium">{product.supplier}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-gray-400" />
+                    <MapPin className="h-4 w-4 text-red-500" />
                     <span className="text-sm">{product.location}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                    <span className="text-sm">{product.rating} Rating</span>
+                    <span className="text-sm">{product.rating} ⭐ (उत्कृष्ट गुणवत्ता)</span>
                   </div>
                 </div>
 
+                {/* Best For */}
+                <div className="flex flex-wrap gap-1">
+                  <span className="text-xs text-gray-500">बेस्ट फॉर:</span>
+                  {product.bestFor.map((use, index) => (
+                    <Badge key={index} variant="outline" className="text-xs">
+                      {use}
+                    </Badge>
+                  ))}
+                </div>
+
+                {/* Contact Button */}
                 <Button
                   onClick={() => handleContactSupplier(product)}
-                  className="w-full bg-green-500 hover:bg-green-600"
+                  className="w-full bg-orange-500 hover:bg-orange-600 text-white"
                   disabled={!product.inStock}
                 >
                   <Phone className="h-4 w-4 mr-2" />
-                  संपर्क करें / Contact Supplier
+                  WhatsApp पर ऑर्डर करें
                 </Button>
               </CardContent>
             </Card>

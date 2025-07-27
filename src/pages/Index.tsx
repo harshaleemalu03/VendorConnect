@@ -30,22 +30,23 @@ const Index = () => {
           </Button>
         </div>
 
-        {/* Problem & Solution */}
+        {/* Problem & Solution - More Specific */}
         <div className="grid md:grid-cols-2 gap-12 mb-16">
           <Card className="border-2 border-red-200 bg-red-50">
             <CardHeader>
               <CardTitle className="text-red-600 text-xl">
-                समस्या / The Problem
+                🚨 असली समस्या / Real Problem
               </CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-3 text-gray-700">
-                <li>• विक्रेताओं को महंगे दामों पर कच्चा माल मिलता है</li>
-                <li>• Vendors get raw materials at high prices</li>
-                <li>• गुणवत्ता की कमी और भरोसेमंद आपूर्तिकर्ता नहीं मिलते</li>
-                <li>• Lack of quality and trusted suppliers</li>
-                <li>• समय की बर्बादी और दूर-दूर जाना पड़ता है</li>
-                <li>• Time wastage and traveling long distances</li>
+                <li>• <strong>मध्यम व्यापारी से ठगी:</strong> 30-40% महंगे दाम</li>
+                <li>• <strong>Middle-men exploitation:</strong> 30-40% higher prices</li>
+                <li>• <strong>गुणवत्ता का भरोसा नहीं:</strong> बासी सब्जी मिलती है</li>
+                <li>• <strong>No quality assurance:</strong> Stale vegetables received</li>
+                <li>• <strong>दूर जाना पड़ता है:</strong> मंडी तक 5-10 km</li>
+                <li>• <strong>Distance problem:</strong> Travel 5-10 km to market</li>
+                <li>• <strong>नकद पेमेंट की मजबूरी</strong> / Cash-only transactions</li>
               </ul>
             </CardContent>
           </Card>
@@ -53,17 +54,19 @@ const Index = () => {
           <Card className="border-2 border-green-200 bg-green-50">
             <CardHeader>
               <CardTitle className="text-green-600 text-xl">
-                समाधान / Our Solution
+                ✅ VendorConnect समाधान / Solution
               </CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-3 text-gray-700">
-                <li>• व्यवसाय के अनुसार उत्पाद सुझाव</li>
-                <li>• Business-specific product recommendations</li>
-                <li>• सत्यापित आपूर्तिकर्ता और बेहतर दाम</li>
-                <li>• Verified suppliers with better prices</li>
-                <li>• डायरेक्ट WhatsApp संपर्क</li>
-                <li>• Direct WhatsApp contact</li>
+                <li>• <strong>सीधा संपर्क:</strong> बिना बिचौलियों के</li>
+                <li>• <strong>Direct contact:</strong> No middlemen involved</li>
+                <li>• <strong>सत्यापित आपूर्तिकर्ता:</strong> ✓ रेटिंग के साथ</li>
+                <li>• <strong>Verified suppliers:</strong> ✓ With ratings</li>
+                <li>• <strong>थोक में सस्ता:</strong> बल्क डिस्काउंट</li>
+                <li>• <strong>Bulk discounts:</strong> Cheaper in quantity</li>
+                <li>• <strong>WhatsApp ऑर्डर:</strong> आसान और तुरंत</li>
+                <li>• <strong>WhatsApp ordering:</strong> Easy & instant</li>
               </ul>
             </CardContent>
           </Card>

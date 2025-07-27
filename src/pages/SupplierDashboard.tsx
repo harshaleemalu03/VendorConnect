@@ -70,18 +70,31 @@ const SupplierDashboard = () => {
     if (savedProducts) {
       setProducts(JSON.parse(savedProducts));
     } else {
+      // Street food supplier mock data - showing understanding of the ecosystem
       const mockProducts: Product[] = [
         {
           id: "1",
-          name: "Fresh Tomatoes",
-          hindiName: "ताज़े टमाटर",
-          price: 25,
+          name: "Fresh Red Tomatoes",
+          hindiName: "ताज़े लाल टमाटर",
+          price: 18,
           unit: "per kg",
-          description: "Fresh red tomatoes from local farm",
+          description: "Direct from farm, perfect for chaat and cooking. Hand-picked this morning.",
           category: "vegetables",
           inStock: true,
-          manufacturingDate: "2025-01-25",
+          manufacturingDate: "2025-01-27",
           expiryDate: "2025-01-30"
+        },
+        {
+          id: "2",
+          name: "Premium Green Chillies",
+          hindiName: "प्रीमियम हरी मिर्च",
+          price: 60,
+          unit: "per kg",
+          description: "Fresh, hot green chillies perfect for street food vendors. Very spicy and fresh.",
+          category: "spices",
+          inStock: true,
+          manufacturingDate: "2025-01-26",
+          expiryDate: "2025-02-02"
         }
       ];
       setProducts(mockProducts);
@@ -290,16 +303,32 @@ const SupplierDashboard = () => {
                     />
                   </div>
                   <div>
+                    <Label htmlFor="category">श्रेणी / Category</Label>
+                    <select
+                      className="w-full p-2 border rounded-md"
+                      value={newProduct.category}
+                      onChange={(e) => setNewProduct({...newProduct, category: e.target.value})}
+                    >
+                      <option value="vegetables">सब्जियां / Vegetables</option>
+                      <option value="spices">मसाले / Spices</option>
+                      <option value="oil">तेल / Oil</option>
+                      <option value="flour">आटा / Flour</option>
+                      <option value="dairy">डेयरी / Dairy</option>
+                      <option value="packaged">पैकेजिंग / Packaging</option>
+                    </select>
+                  </div>
+                  <div>
                     <Label htmlFor="unit">इकाई / Unit</Label>
                     <select
                       className="w-full p-2 border rounded-md"
                       value={newProduct.unit}
                       onChange={(e) => setNewProduct({...newProduct, unit: e.target.value})}
                     >
-                      <option value="per kg">per kg</option>
-                      <option value="per piece">per piece</option>
-                      <option value="per liter">per liter</option>
-                      <option value="per packet">per packet</option>
+                      <option value="per kg">प्रति किलो / per kg</option>
+                      <option value="per piece">प्रति पीस / per piece</option>
+                      <option value="per liter">प्रति लीटर / per liter</option>
+                      <option value="per packet">प्रति पैकेट / per packet</option>
+                      <option value="per bundle">प्रति बंडल / per bundle</option>
                     </select>
                   </div>
                   <div>
